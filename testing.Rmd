@@ -1,0 +1,25 @@
+---
+title: "Fish Creek Met Data"
+author: "Allen Bondurant"
+date: "10/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Fish Creek Watershed Meteorological Data, 2016-2019
+This data was collected at the river gauge on Fish Creek.
+
+```{r met data, echo=FALSE}
+
+FCmet <- read.csv(file="C:/ALLEN/Projects/ADCT/NUIA2-met.csv", header=TRUE, na.strings="null")
+
+library(ggplot2)
+library(cowplot)
+
+Tair <- ggplot(FCmet, aes(Record.Time.UTC., TA))+geom_line()+theme_cowplot()
+
+print(Tair)
+```

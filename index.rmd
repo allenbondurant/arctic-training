@@ -115,7 +115,7 @@ leaflet(locations) %>%
 
 ```{r}
 leaflet(locations) %>% 
-  addWMSTiles("http://gis.dnr.alaska.gov/terrapixel/cubeserv/OIM_BDL?",
+  addWMSTiles("http://gis.dnr.alaska.gov/terrapixel/cubeserv/ortho?",
               layers = 'SDMI_ORTHO_RGB',
               attribution = "Imagery reproduced from the GINA BDL") %>%
   addCircleMarkers(lng = ~Longitude,

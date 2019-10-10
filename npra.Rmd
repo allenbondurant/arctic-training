@@ -1,0 +1,36 @@
+---
+title: "NPRA"
+author: "Allen Bondurant"
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Fish Creek Station, historic
+##Air Temperature
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(cowplot)
+fish <- read.csv(url("http://snobold.ine.uaf.edu/loggernet-data/NPRA/NUIA2-met.dat", method = "libcurl"), stringsAsFactors = FALSE, header = TRUE, skip = 1, na.strings = "null")
+#fish <- na.omit(fish)
+fish$Record.Time.UTC. <- as.POSIXct(fish$Record.Time.UTC.,format="%Y-%m-%d %H:%M:%S")
+
+fish_long <- pivot_longer(data = fish, cols = -c(Record.Time.UTC.,Site),
+               names_to = "measurement_type",
+               values_to = "value")
+fish_long <- na.omit(fish_long)
+
+ggplot(data = fish_long, mapping = aes(x = Record.Time.UTC., y = value))+
+  geom_line()+
+  theme_cowplot()+
+  facet_wrap(measurement_type~., scales = "free", ncol = 1)
+
+##travis CI - continuous integration, to update in real time
+```
+
+

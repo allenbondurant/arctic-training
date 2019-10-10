@@ -9,13 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Fish Creek Station, historic
-##Air Temperature
 ```{r}
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(cowplot)
+```
+
+# Fish Creek Station, historic
+##Air Temperature
+```{r, fig.width = 7, fig.height = 20}
+
 fish <- read.csv(url("http://snobold.ine.uaf.edu/loggernet-data/NPRA/NUIA2-met.dat", method = "libcurl"), stringsAsFactors = FALSE, header = TRUE, skip = 1, na.strings = "null")
 #fish <- na.omit(fish)
 fish$Record.Time.UTC. <- as.POSIXct(fish$Record.Time.UTC.,format="%Y-%m-%d %H:%M:%S")

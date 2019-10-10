@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 # Load in Packages
-```{r packages}
+```{r packages, warning = FALSE, message = FALSE}
   library(leaflet)
   library(dplyr)
   library(tidyr)
@@ -36,11 +36,12 @@ esc <- tryCatch(
     }
 )
 
-head(esc)
+
 ```
 
 # Calculate Annual Escapement by Species, Year, and Region
-```{r}
+
+```{r, results = "hide"}
 species_list <- c("Chinook", "Sockeye", "Chum", "Pink", "Coho")
 
 annual_esc <- esc %>% 
@@ -55,13 +56,53 @@ head(annual_esc)
 ```
 
 # Visualize Escapement
-
-```{r}
+##Total Escapement by Region and Species
+```{r, echo = FALSE}
 ggplot(data = annual_esc, mapping = aes(x = Species, y = Escapement, fill = SASAP.Region)) +
   geom_col()+
   theme_cowplot()
 ```
+## Kodiak Escapement Over Time by Species
+
+```{r}
+ggplot(data = filter(annual_esc, SASAP.Region == "Kodiak"),
+       mapping = aes(x = Year, y = Escapement, color = Species))+
+  geom_point()+
+  geom_line()+
+  ylab("Escapement (no. fish)")+
+  ggtitle("Kodiak Salmon Escapement")
+```
+## Escapement over time: all regions
+```{r, fig.width = 7, fig.height = 12}
+fig1 <- ggplot(annual_esc, aes(x = Year, y = Escapement, color = Species))+
+  geom_point() +
+  geom_line() +
+  facet_wrap(~SASAP.Region, scales = "free_y", ncol = 1)
+
+fig1
+
+ggsave("escapement.png", fig1, width = 12, height = 7, units = "in")
+```
+
+
 
 
 # Map Sampling Locations
+
+Create a table with unique sampling locations, latitudes, and longitudes
+
+
+
+```{r}
+locations <-esc %>% 
+  distinct(Location, Latitude, Longitude) %>% 
+  drop_na()
+
+
+head(locations)
+```
+
+```{r}
+datatable(locations)
+```
 

@@ -106,3 +106,29 @@ head(locations)
 datatable(locations)
 ```
 
+```{r}
+leaflet(locations) %>% 
+  addTiles() %>% 
+  addMarkers(lng = ~Longitude, lat = ~Latitude)
+```
+
+
+```{r}
+leaflet(locations) %>% 
+  addWMSTiles("http://gis.dnr.alaska.gov/terrapixel/cubeserv/OIM_BDL?",
+              layers = 'SDMI_ORTHO_RGB',
+              attribution = "Imagery reproduced from the GINA BDL") %>%
+  addCircleMarkers(lng = ~Longitude,
+                   lat = ~Latitude,
+                   popup = ~ Location,
+                   radius = 5,
+                   # set fill properties
+                   fillColor = "salmon",
+                   fillOpacity = 1,
+                   # set stroke properties
+                   stroke = T,
+                   weight = 0.5,
+                   color = "white",
+                   opacity = 1)
+```
+
